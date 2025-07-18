@@ -140,6 +140,7 @@ const PortfolioTracker = ({ portfolio, portfolioValue, portfolioChange, onAddToP
         </div>
 
         {error && <div className="error-message">{error}</div>}
+        }
 
         <motion.button 
           type="submit"
