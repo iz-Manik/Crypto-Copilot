@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Header from './components/Header';
 import MarketOverview from './components/MarketOverview';
 import CryptoChart from './components/CryptoChart';
 import PortfolioTracker from './components/PortfolioTracker';
 import AssistantChat from './components/AssistantChat';
+import Scene3D from './components/Scene3D';
+import ParticleBackground from './components/ParticleBackground';
 import { getCachedCryptoData } from './services/cryptoData';
 import './styles/main.css';
 
@@ -65,10 +68,26 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container-3d">
+      <ParticleBackground />
+      
       <Header />
 
-      <div className="dashboard">
+      <motion.div 
+        className="scene-container"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3, duration: 1 }}
+      >
+        <Scene3D cryptoData={cryptoData} />
+      </motion.div>
+
+      <motion.div 
+        className="dashboard-3d"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+      >
         <MarketOverview cryptoData={cryptoData} loading={loading} />
         <CryptoChart cryptoData={cryptoData} loading={loading} />
         <PortfolioTracker
@@ -77,14 +96,31 @@ function App() {
           portfolioChange={portfolioChange}
           onAddToPortfolio={addToPortfolio}
         />
-      </div>
+      </motion.div>
 
       <AssistantChat />
 
-      <footer>
-        <p>Crypto Copilot &copy; {new Date().getFullYear()} | Powered by io.net AI | Real-time market data</p>
-        <p><i className="fas fa-shield-alt"></i> All data is securely processed | Not financial advice</p>
-      </footer>
+      <motion.footer 
+        className="footer-3d"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.8 }}
+      >
+        <motion.p
+          animate={{ opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          Crypto Copilot &copy; {new Date().getFullYear()} | Powered by io.net AI | Real-time market data
+        </motion.p>
+        <p>
+          <motion.i 
+            className="fas fa-shield-alt"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 4 }}
+          />
+          All data is securely processed | Not financial advice
+        </p>
+      </motion.footer>
     </div>
   );
 }

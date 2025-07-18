@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import Chart from 'chart.js/auto';
+import GlassCard from './GlassCard';
 
 const CryptoChart = ({ cryptoData, loading }) => {
   const chartRef = useRef(null);
@@ -91,22 +93,43 @@ const CryptoChart = ({ cryptoData, loading }) => {
 
   if (loading) {
     return (
-      <div className="card">
-        <h2><i className="fas fa-chart-bar"></i> BTC Price (7D)</h2>
-        <div className="chart-container loading-placeholder">
-          <div className="loading-chart"></div>
+      <GlassCard className="chart-card">
+        <motion.h2 className="card-title">
+          <i className="fas fa-chart-bar"></i> BTC Price (7D)
+        </motion.h2>
+        <div className="chart-container-3d loading-placeholder">
+          <motion.div 
+            className="loading-chart-3d"
+            animate={{ opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
         </div>
-      </div>
+      </GlassCard>
     );
   }
 
   return (
-    <div className="card">
-      <h2><i className="fas fa-chart-bar"></i> BTC Price (7D)</h2>
-      <div className="chart-container">
+    <GlassCard className="chart-card" delay={0.2}>
+      <motion.h2 
+        className="card-title"
+        whileHover={{ scale: 1.05 }}
+      >
+        <motion.i 
+          className="fas fa-chart-bar"
+          animate={{ scaleY: [1, 1.2, 1] }}
+          transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+        />
+        BTC Price (7D)
+      </motion.h2>
+      <motion.div 
+        className="chart-container-3d"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
         <canvas ref={chartRef}></canvas>
-      </div>
-    </div>
+      </motion.div>
+    </GlassCard>
   );
 };
 
